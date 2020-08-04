@@ -8,7 +8,7 @@ const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./model/u
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
+const io = require('socket.io').listen(server);
 
 // set up access to public folder
 app.use(express.static(path.join(__dirname, 'public')));
