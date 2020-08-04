@@ -181,6 +181,8 @@ a:hover{
 	flex: 1;
 }
 
+
+
 @media(max-width: 700px){
     .join-main{
         width: 80%;
