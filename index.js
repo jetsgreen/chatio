@@ -4,7 +4,7 @@ const path = require('path');
 const express = require('express');
 const io = require('socket.io')(http);
 const formatMessage = require('./model/messages');
-const {userJoin, getCurrentUser} = require('./model/users');
+const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./model/users');
 
 // set up access to public folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -24,16 +24,34 @@ io.on('connection', socket => {
 
         // Broadcast when a user connects(this will emit to everyone except user thats connecting)
         socket.broadcast.to(user.room).emit('message', formatMessage(chatBot, `${user.username} has joined the chat`));
-    })
+
+        // Send users and room info
+        io.to(user.room).emit('roomUsers', {
+            room: user.room,
+            users: getRoomUsers(user.room)
+        })
+    });
 
     // Listen for chatMessage
     socket.on('chatMessage', (msg) => {
-        io.emit('message', formatMessage('USER', msg))
+        const user = getCurrentUser(socket.id);
+        io.to(user.room).emit('message', formatMessage(user.username, msg))
     })
 
     // This runs when a user disconnects
     socket.on('disconnect', () => {
-        io.emit('message', formatMessage(chatBot, 'A user has left the chat'))
+
+        const user = userLeave(socket.id);
+        if (user) {
+            io.to(user.room).emit('message', formatMessage(chatBot, `${user.username} has left the chat`));
+
+            // Send users and room info
+            io.to(user.room).emit('roomUsers', {
+                room: user.room,
+                users: getRoomUsers(user.room)
+            })
+        }
+
     })
 });
 
