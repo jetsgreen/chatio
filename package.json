@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/jetsgreen/chatio/issues"
   },
-  "homepage": "https://github.com/jetsgreen/chatio#readme",
+  "homepage": "https://github.com/jetsgreen/chatio",
   "dependencies": {
     "express": "^4.17.1",
     "moment": "^2.27.0",
