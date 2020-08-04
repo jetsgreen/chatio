@@ -11,7 +11,7 @@ function userJoin(id, username, room){
 
 // Get the current user
 function getCurrentUser(id){
-    return users.filter(user => user.id === id)
+    return users.find(user => user.id === id)
 }
 
 module.exports = {
