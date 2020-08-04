@@ -1,10 +1,14 @@
-const app = require('express')();
-const http = require('http').createServer(app);
 const path = require('path');
+const http = require('http');
 const express = require('express');
-const io = require('socket.io')(http);
+const socketio = require('socket.io');
+
 const formatMessage = require('./model/messages');
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./model/users');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
 
 // set up access to public folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -55,6 +59,7 @@ io.on('connection', socket => {
     })
 });
 
-http.listen(3000, () => {
-    console.log('listening on *:3000');
+const PORT = process.env.PORT || 3000;
+server.listen(3000, () => {
+    console.log(`server running on port ${PORT}`);
 });
