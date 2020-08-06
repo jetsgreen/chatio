@@ -4,7 +4,7 @@
   "description": "messaging app",
   "main": "index.js",
   "scripts": {
-    "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d index.html",
     "start": "node server",
     "dev": "nodemon index"
   },
